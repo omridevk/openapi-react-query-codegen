@@ -14,8 +14,10 @@ const createSourceFile = async (outputPath: string) => {
     // Read more: https://ts-morph.com/setup/
     skipAddingFilesFromTsConfig: true,
   });
-
-  const sourceFiles = join(process.cwd(), outputPath);
+  const isAbsolutePath = outputPath.startsWith("/");
+  const sourceFiles = isAbsolutePath
+    ? outputPath
+    : join(process.cwd(), outputPath);
   project.addSourceFilesAtPaths(`${sourceFiles}/**/*`);
 
   const service = await getServices(project);
